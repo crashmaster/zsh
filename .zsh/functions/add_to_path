@@ -3,6 +3,9 @@ add_to_path() {
     local p
     for p in $to_add
     do
+        # The (r) flag takes a pattern and substitutes the first element
+        # of the array matched.
+        # 1 is substituted, when $p was found.
         (( ${${path[(r)$p]}:+1} )) || {
             [ -d $p ] && path=($p $path)
         }
