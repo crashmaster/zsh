@@ -1,0 +1,13 @@
+add_to_path() {
+    local to_add=($@)
+    local p
+    for p in $to_add
+    do
+        (( ${${path[(r)$p]}:+1} )) || {
+            [ -d $p ] && path=($p $path)
+        }
+    done
+}
+
+# vim: ft=zsh
+
