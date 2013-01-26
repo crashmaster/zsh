@@ -14,20 +14,19 @@ alias ltr='/bin/ls -alFtr --color'
 alias ..='cd ..'
 alias ...='cd ../..'
 
-### editors
-alias vim='/app/vim/7.3.496/LMWP2/bin/vim'
-alias v='/app/vim/7.3.496/LMWP2/bin/vim -p'
-alias vd='/app/vim/7.3.496/LMWP2/bin/vimdiff'
-alias vlsco='/app/vim/7.3.496/LMWP2/bin/vim -p `lsco`'
-
 ### ClearCase stuff
-alias ci='/usr/atria/bin/cleartool checkin' #TODO: try '-atomic'
-alias co='/usr/atria/bin/cleartool checkout -unre -nc'
-alias ct='/usr/atria/bin/cleartool'
-alias ctdesc='/usr/atria/bin/cleartool desc'
-alias sv='/usr/atria/bin/cleartool setview'
-alias unco='/usr/atria/bin/cleartool uncheckout -rm'
-
+CLEARTOOL=/usr/atria/bin/cleartool
+alias ct="$CLEARTOOL"
+alias sv="$CLEARTOOL setview"
 [[ -n $CLEARCASE_ROOT ]] && {
+    # Note: there is /usr/bin/ci (check in RCS revisions)
+    alias ci="$CLEARTOOL checkin" #TODO: try "-atomic"
+    # Note: there is /usr/bin/co (Compare two sorted files line by line)
+    alias co="$CLEARTOOL checkout -unre -nc"
+    alias ctdesc="$CLEARTOOL desc"
+    alias unco="$CLEARTOOL uncheckout -rm"
+
     alias cudb='cd /vobs/gdb/cudb'
 }
+
+[[ -r $0.site ]] && source $0.site
