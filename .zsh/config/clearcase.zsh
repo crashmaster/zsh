@@ -2,5 +2,5 @@
 # system
 
 local _myccview
-_myccview=$(/usr/atria/bin/cleartool pwv -s)
+_myccview=$(/usr/atria/bin/cleartool pwv -s 2>/dev/null)
 

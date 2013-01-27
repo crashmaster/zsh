@@ -1,7 +1,7 @@
 autoload -U promptinit
 promptinit
 
-if [[ $_myccview != "** NONE **" ]]; then
+if [[ $_myccview != "** NONE **" ]] && [ -n "$_myccview" ]; then
 PS1="%{$fg[green]%}%n%{$fg[white]%}@%{$fg[green]%}%m%{$fg[white]%}(%{$fg[green]%}$_myccview%{$fg[white]%}) %~
 %{$fg[green]%}%% %{$reset_color%}"
 else
