@@ -25,9 +25,7 @@ conf_func() {
     do
         [[ -z ${${$(host ${SSH_CLIENT[(w)1]})[(w)5]}##$c*} ]] && {
             term_256c=1
-            export PUTTY_TERM=1
             # print_nice_text
-            export TERM=xterm-256color
             break
         }
     done
