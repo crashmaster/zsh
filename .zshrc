@@ -17,6 +17,7 @@ ZSH=${ZDOTDIR:-$HOME}/.zsh
 
 # {{{ Add functions and completions directories to the fpath
 fpath=($ZSH/functions $ZSH/completions $fpath)
+autoload -Uz ${(f)"$(/bin/ls $ZSH/functions)"}
 # }}}
 
 # {{{ Kind of modular config file structure
