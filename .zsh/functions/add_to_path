@@ -1,8 +1,6 @@
 add_to_path() {
-    local to_add
     local p
-    to_add=($@)
-    for p in $to_add
+    for p in "$@"
     do
         # The (r) flag takes a pattern and substitutes the first element
         # of the array matched.
