@@ -15,7 +15,8 @@
 ZSH=${ZDOTDIR:-$HOME}/.zsh
 # }}}
 
-# {{{ Add functions and completions directories to the fpath
+# {{{ Add functions and completions directories to the fpath,
+#     and "register" function names, to be loaded upon calling
 fpath=($ZSH/functions $ZSH/completions $fpath)
 autoload -Uz ${(f)"$(/bin/ls $ZSH/functions)"}
 # }}}

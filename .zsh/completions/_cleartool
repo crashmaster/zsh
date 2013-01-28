@@ -1,0 +1,359 @@
+#compdef cleartool
+
+# Limitations:
+#   * not all ClearCase commands are considered, only those I use(d)
+#   * in the checkin command the -cact option handling is omitted
+
+# TODO: add short-name support for all the handled commands
+
+_cleartool() {
+    local -A _common_usage_options
+    _common_usage_options=(
+        -graphical "-graphical[starts an HTML browser to display the reference page]"
+    )
+
+    # Unfortunately this list (subcommand + description) cannot be obtained
+    # with query, so it was done by hand, but ct help and ct man values are
+    # not hardcoded, but generated with some shell command.
+    local -a _sub_commands
+    _sub_commands=(
+        "annotate:annotates lines of text file / time stamps, user names, and so on"
+        "apropos:displays command summary information"
+        "catcr:displays configuration record created by clearmake, or clearaudit"
+        "catcs:displays the config spec of a view"
+        "cd:changes the current working directory"
+        "chactivity:changes an activity"
+        "chbl:changes a baseline"
+        {checkin,ci}":creates a permanent new version of an element"
+        {checkout,co}":creates a modifiable copy of a version"
+        "checkvob:finds and fixes inconsistencies between VOB database and storage pools, problems with hyperlinks, and problems with global types"
+        "chevent:changes the comment string in an event record"
+        "chflevel:raises the feature level of a VOB"
+        "chfolder:modifies a UCM folder"
+        "chmaster:transfers mastership of VOB-database object"
+        "chpool:changes the storage pool to which an element is assigned"
+        "chproject:modifies a UCM project"
+        "chstream:modifies a UCM stream"
+        "chtype:changes the type of an element or renames a branch"
+        "chview:changes properties of a view"
+        "cptype:makes a copy of an existing type object"
+        "deliver:delivers changes in a source stream to the target stream within or across projects"
+        "describe:describes an object"
+        "diff:compares versions of a text-file element or a directory"
+        "diffbl:compares the contents of baselines or streams"
+        "diffcr:compares configuration records created by clearmake, omake, or clearaudit"
+        "dospace:reports on VOB disk space used for shared derived objects"
+        "edcs:edits the config spec of a view"
+        "endview:deactivates a view"
+        "file:displays the element type ClearCase or ClearCase LT would use for a file"
+        "find:uses a pattern, query, or expression to search for objects"
+        "findmerge:searches for versions that require a merge /optionally perform merge"
+        "get:in ClearCase and ClearCase LT, copies a specified version of a file element into a snapshot view"
+        "getcache:displays cache information"
+        "getlog:displays UNIX log files"
+        "help:displays help on command usage"
+        "hostinfo:displays configuration data for one or more hosts"
+        "ln:creates VOB hard link or VOB symbolic link"
+        "lock:locks an object"
+        "ls:lists VOB-resident objects, elements loaded into a snapshot view, and view-private objects in a directory"
+        "lsactivity:lists information about UCM activities"
+        "lsbl:lists information about a baseline"
+        {lscheckout,lsco}":lists checkouts of an element"
+        "lsclients:displays the client host list for a ClearCase license or registry server host, or for a ClearCase LT server host"
+        "lscomp:lists information about a component"
+        "lsdo:lists derived objects created by clearmake, omake, or clearaudit (dynamic views only)"
+        "lsfolder:lists information about folders"
+        "lshistory:lists event records for VOB-database objects"
+        "lslock:lists locks on objects"
+        "lsmaster:lists objects mastered by a replica"
+        "lspool:lists VOB storage pools"
+        "lsprivate:lists objects in a dynamic view's private storage area"
+        "lsproject:lists information about a UCM project"
+        "lsregion:lists ClearCase network regions"
+        "lsreplica:lists VOB replicas"
+        "lssite:lists site-wide default properties"
+        "lsstgloc:lists view and VOB server storage locations"
+        "lsstream:lists information about one or more streams"
+        "lstype:lists a VOB's type objects"
+        "lsview:lists view registry entries"
+        "lsvob:lists VOB registry entries"
+        "lsvtree:lists version tree of an element"
+        "man:displays an online reference page"
+        "merge:merges versions of a text-file element or a directory"
+        "mkactivity:creates an activity"
+        "mkattr:attaches attributes to objects"
+        "mkattype:creates or updates an attribute type object"
+        "mkbl:creates a baseline or set of baselines"
+        "mkbranch:creates a new branch in the version tree of an element"
+        "mkbrtype:creates/updates a branch type object"
+        "mkcomp:creates a component object"
+        "mkdir:creates a directory element"
+        "mkelem:creates a file or directory element"
+        "mkeltype:creates or updates an element type object"
+        "mkfolder:creates a folder for a project"
+        "mkhlink:attaches a hyperlink to an object"
+        "mkhltype:creates or updates a hyperlink type object"
+        "mklabel:attaches version labels to versions of elements"
+        "mklbtype:creates or updates a label type object"
+        "mkpool:creates a VOB storage pool or modifies its scrubbing parameters"
+        "mkproject:creates a project"
+        "mkregion:registers a new ClearCase network region"
+        "mkstgloc:creates a server storage location for views or VOBs"
+        "mkstream:creates a stream for a project"
+        "mktag:creates a tag for a view or VOB"
+        "mktrigger:attaches a trigger to an element or UCM object"
+        "mktrtype:creates a trigger type object"
+        "mkview:creates and registers a view"
+        "mkvob:creates and registers a versioned object base (VOB)"
+        "mount:activates a VOB at its VOB-tag directory"
+        {move,mv}":moves or renames an element or VOB link"
+        "protect:changes permissions or ownership of a VOB object"
+        "protectvob:changes owner or groups of a VOB"
+        "pwd:prints working directory"
+        "pwv:prints the working view"
+        "quit:quits an interactive session"
+        "rebase:changes the configuration of a stream"
+        "recoverview:recovers a dynamic view database"
+        "reformatview:updates the format of a view database"
+        "reformatvob:updates the format of a VOB database"
+        "register:creates an entry in the VOB or view object registry"
+        "relocate:moves elements and directory trees from one VOB to another"
+        "rename:assigns a new name to an existing object"
+        "reqmaster:sets access controls for mastership requests or requests mastership of a branch or branch type"
+        "reserve:converts an unreserved checkout to reserved"
+        "rmactivity:deletes an activity"
+        "rmattr:removes an attribute from an object"
+        "rmbl:removes a baseline"
+        "rmbranch:removes a branch from the version tree of an element"
+        "rmcomp:removes a component"
+        "rmdo:removes a derived object from a VOB"
+        "rmelem:removes an element or symbolic link from a VOB"
+        "rmfolder:remove a folder"
+        "rmhlink:removed a hyperlink object"
+        "rmlabel:removes a version label from a version"
+        "rmmerge:removes a merge arrow from an element's version tree"
+        "rmname:removes the name of an element or VOB symbolic link from a directory version"
+        "rmpool:removes a VOB storage pool"
+        "rmproject:removes a project"
+        "rmregion:unregisters a ClearCase network region"
+        "rmstgloc:removes registry entries for server storage locations"
+        "rmstream:remove a stream"
+        "rmtag:removes a view-tag or a VOB-tag from the networkwide storage registry"
+        "rmtrigger:removes trigger from an element or UCM object"
+        "rmtype:removes a type object from a VOB"
+        "rmver:removes a version from the version tree of an element"
+        "rmview:removes a view or removes view-related records from a VOB"
+        "rmvob:removes a VOB storage directory"
+        "schedule:schedules and manages jobs to be run one or more times"
+        "setactivity:sets or unsets the activity for a view"
+        "setcache:changes cache settings"
+        "setcs:sets the config spec of a view"
+        "setplevel:changes the list of promotion levels in a project VOB"
+        "setrgysvrtype:provides a simple mechanism to configure registry server type on a local host"
+        "setsite:sets or unsets site-wide properties in the site config registry"
+        "setview:creates a process that is set to a dynamic view"
+        "shell:creates a subprocess to run a shell or other program"
+        "space:reports on disk space use for views, VOBs, or file-system files or directories"
+        "startview:starts or connects to a dynamic view's view_server process"
+        "umount:deactivates a VOB"
+        {uncheckout,unco}":cancels a checkout of an element"
+        "unlock:unlocks an object"
+        "unregister:removes an entry from the vob_object or view_object registry"
+        "unreserve:changes a reserved checkout to unreserved"
+        "update:updates elements in a snapshot view"
+        "winkin:accesses one or more derived objects (DOs) from a dynamic view, or converts a nonshareable derived object to a shareable (promoted) derived object"
+    )
+
+    local curcontext="$curcontext" state line expl
+    local -A opt_args
+
+    _arguments -C '*:: :->subcmds'
+
+    if (( CURRENT == 1 )); then
+        _describe -t commands "cleartool commands" _sub_commands
+        return
+    fi
+
+    case "$words[1]" in
+        "apropos")
+            local -a topics
+            topics=${_sub_commands[@]%%:*}
+            _arguments \
+                ":topic name:($topics)" && \
+            return 0
+        ;;
+        "cd")
+            _arguments "1:directory:_directories" && \
+            return 0
+        ;;
+        "checkin"|"ci")
+            _arguments \
+                "(-c -comment -cfi -cfile -cq -cquery -cqe -cqeach -nc -nocomment)"{-c,-comment}"[comment for all objects in the command]:comment string" \
+                "(-cfi -cfile -c -comment -cq -cquery -cqe -cqeach -nc -nocomment)"{-cfi,-cfile}"[text file, which is used -as comment- for all objects in the command]:comment file pname:_files" \
+                "(-cq -cquery -c -comment -cfi -cfile -cqe -cqeach -nc -nocomment)"{-cq,-cquery}"[prompts for one comment, that is than used for all objects in the command]" \
+                "(-cqe -cqeach -c -comment -cfi -cfile -cq -cquery -nc -nocomment)"{-cqe,-cqeach}"[prompts for comment for each object in the command]" \
+                "(-nc -nocomment -c -comment -cfi -cfile -cq -cquery -cqe -cqeach)"{-nc,-nocomment}"[no user-supplied comment string for each object in the command]" \
+                "(-nwa -nwarn)"{-nwa,-nwarn}"[suppresses warning messages]" \
+                "-cr[checks in only the configuration record for the specified derived objects]" \
+                "(-ptime -pti)"{-ptime,-pti}"[preserves the modification time of the file being checked in]" \
+                "(-kee -keep -rm)"{-kee,-keep}"[saves the current contents of each checked-out version in a view-private file (pname.keep\[.n\])]" \
+                "(-kee -keep)-rm[removes each pname file after creating a new version (default in dynamic view)]" \
+                "(-fro -from)"{-fro,-from}"[uses the contents of source-pname as the new version, instead of the view-private file pname]:source pname:_files" \
+                "(-ide -identical)"{-ide,-identical}"[checks in the element even if the predecessor version is identical to the checked-out version]" \
+                "(-ato -atomic)"{-ato,-atomic}"[if the checkin fails for one element, then it is to fail for all elements]" \
+                "*:pname:_files" && \
+            return 0
+        ;;
+        "checkout"|"co")
+            _arguments \
+                "(-res -reserved -unr -unreserved)"{-res,-reserved}"[no user in another view can perform a reserved checkout]" \
+                "(-unr -unreserved -res -reserved)"{-unr,-unreserved}"[other users, in other views can check out the same version]" \
+                "(-nma -nmaster -res -reserved)"{-nma,-nmaster}"[checks out the branch even if the current replica does not master the branch]" \
+                "(-nda -ndata)-out[creates a writable file under an alternate file name]:destination file pname:_files" \
+                "(-nda -ndata -out)"{-nda,-ndata}"[creates a checkout record for the version, but no editable file for it]" \
+                "(-bra -branch -ver -version)"{-bra,-branch}"[the branch whose most recent version is to be checked out]:branch name" \
+                "(-ver -version -bra -branch)"{-ver,-version}"[allows to checkout a version that is not the latest on its branch]" \
+                "(-ptime -pti)"{-ptime,-pti}"[preserves the modification time of the file being checked in]" \
+                "(-nwa -nwarn)"{-nwa,-nwarn}"[suppresses warning messages]" \
+                "(-c -comment -cfi -cfile -cq -cquery -cqe -cqeach -nc -nocomment)"{-c,-comment}"[comment for all objects in the command]:comment string" \
+                "(-cfi -cfile -c -comment -cq -cquery -cqe -cqeach -nc -nocomment)"{-cfi,-cfile}"[text file, which is used -as comment- for all objects in the command]:comment file pname:_files" \
+                "(-cq -cquery -c -comment -cfi -cfile -cqe -cqeach -nc -nocomment)"{-cq,-cquery}"[prompts for one comment, that is than used for all objects in the command]" \
+                "(-cqe -cqeach -c -comment -cfi -cfile -cq -cquery -nc -nocomment)"{-cqe,-cqeach}"[prompts for comment for each object in the command]" \
+                "(-nc -nocomment -c -comment -cfi -cfile -cq -cquery -cqe -cqeach)"{-nc,-nocomment}"[no user-supplied comment string for each object in the command]" \
+                "(-q -query -nq -nquery -use -usehijack)"{-q,-query}"[queries for the resolution of a checkout problem]" \
+                "(-nq -nquery -q -query -use -usehijack)"{-nq,-nquery}"[does not query for the resolution of a checkout problem]" \
+                "(-use -usehijack -q -query -nq -nquery)"{-use,-usehijack}"[instructs checkout to use the hijacked file as the checked-out version]" \
+                "*:pname:_files" && \
+            return 0
+        ;;
+        "diff")
+            _arguments \
+                "(-g -graphical -win -window -ser -serial_format -dif -diff_format -col -columns)"{-g,-graphical}"[displays differences graphically]" \
+                "(-tin -tiny -win -window)"{-tin,-tiny}"[uses a smaller font in the difference window]" \
+                "(-win -window -g -graphical -tin -tiny -hst -hstack -vst -vstack)"{-win,-window}"[displays output in a non-graphical difference window]" \
+                "(-hst -hstack -win -window -vst -vstack)"{-hst,-hstack}"[stacks the contributor panes horizontally]" \
+                "(-vst -vstack -win -window -hst -hstack)"{-vst,-vstack}"[stacks the contributor panes vertically]" \
+                "(-pre -predecessor)"{-pre,-predecessor}"[diff to the predecessor version of pname in the version tree]" \
+                "(-opt -options)"{-opt,-options}"[one or more compare method options that are not directly supported by diff]:pass through options" \
+                "(-ser -serial_format -g -graphical -dif -diff_format -col -columns)"{-ser,-serial_format}"[reports differences with each line containing output from a single file]" \
+                "(-dif -diff_format -g -graphical -ser -serial_format -col -columns)"{-dif,-diff_format}"[same style as the UNIX and Linux diff utility]" \
+                "(-col -columns -g -graphical -ser -serial_format -dif -diff_format)"{-col,-columns}"[the overall width of a side-by-side report]:columns" \
+                "*:pname:_files" && \
+            return 0
+        ;;
+        "endview")
+            _arguments \
+                "(-ser -server)"{-ser,-server}"[terminates the view's view_server process]" \
+                "*:view tag" && \
+            return 0
+        ;;
+        "man")
+            local -a man_topics
+            man_topics=${${${(M)${(f)"$(ls /usr/atria/doc/man/cat1)"}:#ct_*}#ct_}%\.*}
+            _arguments \
+                "$_common_usage_options[-graphical]" \
+                "1:topic name:($man_topics)" && \
+            return 0
+        ;;
+        "help")
+            local -a help_topics
+            help_topics=${${${(M)${(f)"$(/usr/atria/bin/cleartool help)"}:#U*}#U*: }%% *}
+            _arguments \
+                "$_common_usage_options[-graphical]" \
+                "1:topic name:($help_topics)" && \
+            return 0
+        ;;
+        "lscheckout"|"lsco")
+            _arguments \
+                "(-l -long -s -short -fmt)"{-l,-long}"[include the view, where the element is checked out]" \
+                "(-s -short -l -long -fmt)"{-s,-short}"[displays only the path names]" \
+                "(-s -short -l -long)-fmt[lists information using the specified format string]:format string" \
+                "(-cvi -cview)"{-cvi,-cview}"[restricts listing to the current view]" \
+                "(-brt -brtype)"{-brt,-brtype}"[restricts listing to the specified branch type]:branch type selector" \
+                "(-usr -user)-me[restricts the listing to the own checkouts]" \
+                "(-usr -user -me)"{-usr,-user}"[restricts the listing to checkouts made by the specified user]:login name:_users" \
+                "(-r -recurse -d -directory -a -all -avo -avobs)"{-r,-recurse}"[lists the checkouts in the entire subtree in the current view]" \
+                "(-d -directory -r -recurse -a -all -avo -avobs)"{-d,-directory}"[lists the checkouts of a directory itself]" \
+                "(-a -all -r -recurse -d -directory -avo -avobs)"{-a,-all}"[lists all the checkouts in the VOB containing pname]" \
+                "(-avo -avobs -r -recurse -d -directory -a -all)"{-avo,-avobs}"[includes checkouts in all VOBs mounted on the local host]" \
+                "(-are -areplicas)"{-are,-areplicas}"[lists checkouts of the element specified by pname in all replicas]" \
+                "*:pname:_files" && \
+            return 0
+        ;;
+        "lsprivate"|"lsp")
+            _arguments \
+                "-tag[view tag of any dynamic view which you can read]:view tag" \
+                "(-l -long -s -short)"{-l,-long}"[lists objects in the style of ls -long]" \
+                "(-s -short -l -long)"{-s,-short}"[displays only the path names]" \
+                "(-siz -size)"{-siz,-size}"[lists each file's size in bytes]" \
+                "-age[lists the last access time of each file]" \
+                "-co[lists checked-out versions of file elements]" \
+                "-do[lists derived objects]" \
+                "(-oth -other)"{-oth,-other}"[lists view-private files and directories]" \
+                "-invob[restricts the listing to the specified VOB or directory]:vob selector OR directory pnames:_directories" && \
+            return 0
+        ;;
+        "lsview")
+            local -a args
+            args+=(
+                "(-s -short -l -long)"{-s,-short}"[short description bla bla]"
+                "(-l -long -s -short)"{-l,-long}"[long description bla bla]"
+                "(-h -host)"{-h,-host}"[host description bla bla]:host:_hosts"
+                "(-pro -properties -age)"{-pro,-properties}"[properties description bla bla]"
+                "(-pro -properties)-age[lists the last access time of each file]" \
+                "(-reg -region)"{-reg,-region}"[region description bla bla]:network-region"
+                "-cview[cview description bla bla]" \
+            )
+
+            # add -quick option if -hos/t is present
+            for opt (-h -host)
+            do
+                [[ ${${${words[(r)${opt}]}/?##/1}:-0} == 1 ]] && {
+                    args+=(
+                       "-quick[quick description bla bla]"
+                    )
+                    break
+                }
+            done
+
+            # add -ful/l | -text_mode options if -pro/perties is present
+            for opt (-pro -properties)
+            do
+                [[ ${${${words[(r)${opt}]}/?##/1}:-0} == 1 ]] && {
+                    args+=(
+                       "(-ful -full -text_mode)"{-ful,-full}"[full description bla bla]"
+                       "(-ful -full)-text_mode[text mode description bla bla]"
+                    )
+                    break
+                }
+            done
+
+            _arguments $args && return 0
+        ;;
+        "quit"|"pwd")
+            return 0
+        ;;
+        "setview")
+            local -a my_cc_views
+            my_cc_views=( ${(f)"$(<~/.my_cc_views)"} )
+            _arguments \
+                "-login[reads your shell startup file]" \
+                "-exec[invokes the specified command in the given view]: :(cmd cmd_seq_qouted)" \
+                "1:view-tag:($my_cc_views)" && \
+            return 0
+        ;;
+        "startview")
+            _arguments \
+                "*:view tag" && \
+            return 0
+        ;;
+        *)
+            _message "unknown cleartool command: $words[1]"
+            _default
+        ;;
+    esac
+
+    return 1
+}
+
+_cleartool "$@"
