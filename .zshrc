@@ -24,7 +24,11 @@ autoload -Uz ${(f)"$(/bin/ls $ZSH/functions)"}
 # {{{ Kind of modular config file structure
 # Note: the config file's name determines the sourcing order!
 loader() {
-    for config_file ($ZSH/config/*.zsh) source $config_file
+    for config_file in $ZSH/config/*.zsh
+    do
+      source $config_file
+      [[ -r $config_file.site ]] && source $config_file.site
+    done
 } && loader
 # }}}
 

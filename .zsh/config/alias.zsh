@@ -28,5 +28,3 @@ alias sv="$CLEARTOOL setview"
 
     alias cudb='cd /vobs/gdb/cudb'
 }
-
-[[ -r $0.site ]] && source $0.site

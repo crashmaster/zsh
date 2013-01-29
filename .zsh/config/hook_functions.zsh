@@ -6,5 +6,3 @@ chpwd() {
         *xterm*|rxvt|(dt|k|E)term) print -Pn "\e]2;%m:%~\a";;
     esac
 }
-
-[[ -r $0.site ]] && source $0.site

@@ -6,5 +6,3 @@ if [[ "$_myccview" != "** NONE **" ]] && [ -n "$_myccview" ]; then
 else
     PS1="%m %U[%T]%u [%~] -> "
 fi
-
-[[ -r $0.site ]] && source $0.site
