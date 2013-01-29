@@ -7,14 +7,4 @@ chpwd() {
     esac
 }
 
-preexec() {
-  if [ -n "${STY+x}" ]; then
-    if [[ $_myccview = "** NONE **" ]] || [ -z "$_myccview" ]; then
-      print -Pn "\ek%m\e\\"
-    else
-      print -Pn "\ek$_myccview\e\\"
-    fi
-  else
-    : "probably not in screen"
-  fi
-} && preexec
+[[ -r $0.site ]] && source $0.site
