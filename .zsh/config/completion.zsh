@@ -6,7 +6,6 @@ setopt auto_remove_slash
 setopt complete_in_word
 setopt always_to_end
 setopt glob_complete
-setopt complete_aliases
 unsetopt list_beep
 unsetopt recexact
 
@@ -21,6 +20,3 @@ zstyle ':completion:*:*:kill:*' menu yes select
 local _myhosts
 _myhosts=( ${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*} )
 zstyle ':completion:*' hosts $_myhosts
-
-# Make the cleartool completion also work for the ct alias
-compdef '_cleartool' ct
