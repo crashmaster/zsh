@@ -3,7 +3,7 @@ alias df='df -h'
 alias du='du -h'
 
 ### ps
-alias p="/bin/ps -fu $USER"
+alias p="/bin/ps -f --forest -u $USER"
 alias pt="/usr/bin/pstree -Achln $USER"
 
 ### ls
