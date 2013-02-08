@@ -333,6 +333,14 @@ _cleartool() {
         "quit"|"pwd")
             return 0
         ;;
+        "rmview")
+            local -a my_cc_views
+            my_cc_views=( ${(f)"$(<~/.my_cc_views)"} )
+            _arguments \
+               "-force" \
+                "-tag[dynamic-view-tag]:view-tag:($my_cc_views)" && \
+            return 0
+        ;;
         "setview")
             local -a my_cc_views
             my_cc_views=( ${(f)"$(<~/.my_cc_views)"} )
