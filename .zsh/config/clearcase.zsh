@@ -1,6 +1,3 @@
-#TODO: define here value provider functions for the clearcase completion
-# system
+#TODO: define here value provider functions for the clearcase completion system
 
-local _myccview
-_myccview=$(/usr/atria/bin/cleartool pwv -s 2>/dev/null)
-
+export CCVIEW=${CLEARCASE_ROOT##*/}
