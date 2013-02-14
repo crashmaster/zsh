@@ -2,9 +2,7 @@
 
 # Limitations:
 #   * not all ClearCase commands are considered, only those I use(d)
-#   * in the checkin command the -cact option handling is omitted
-
-# TODO: add short-name support for all the handled commands
+#   * in the checkin command the -cact + activity_selector options are omitted
 
 _cleartool() {
     local -A _common_usage_options
@@ -205,26 +203,39 @@ _cleartool() {
             return 0
         ;;
         "checkout"|"co")
-            _arguments \
-                "(-res -reserved -unr -unreserved)"{-res,-reserved}"[no user in another view can perform a reserved checkout]" \
-                "(-unr -unreserved -res -reserved)"{-unr,-unreserved}"[other users, in other views can check out the same version]" \
-                "(-nma -nmaster -res -reserved)"{-nma,-nmaster}"[checks out the branch even if the current replica does not master the branch]" \
-                "(-nda -ndata)-out[creates a writable file under an alternate file name]:destination file pname:_files" \
-                "(-nda -ndata -out)"{-nda,-ndata}"[creates a checkout record for the version, but no editable file for it]" \
-                "(-bra -branch -ver -version)"{-bra,-branch}"[the branch whose most recent version is to be checked out]:branch name" \
-                "(-ver -version -bra -branch)"{-ver,-version}"[allows to checkout a version that is not the latest on its branch]" \
-                "(-ptime -pti)"{-ptime,-pti}"[preserves the modification time of the file being checked in]" \
-                "(-nwa -nwarn)"{-nwa,-nwarn}"[suppresses warning messages]" \
-                "(-c -comment -cfi -cfile -cq -cquery -cqe -cqeach -nc -nocomment)"{-c,-comment}"[comment for all objects in the command]:comment string" \
-                "(-cfi -cfile -c -comment -cq -cquery -cqe -cqeach -nc -nocomment)"{-cfi,-cfile}"[text file, which is used -as comment- for all objects in the command]:comment file pname:_files" \
-                "(-cq -cquery -c -comment -cfi -cfile -cqe -cqeach -nc -nocomment)"{-cq,-cquery}"[prompts for one comment, that is than used for all objects in the command]" \
-                "(-cqe -cqeach -c -comment -cfi -cfile -cq -cquery -nc -nocomment)"{-cqe,-cqeach}"[prompts for comment for each object in the command]" \
-                "(-nc -nocomment -c -comment -cfi -cfile -cq -cquery -cqe -cqeach)"{-nc,-nocomment}"[no user-supplied comment string for each object in the command]" \
-                "(-q -query -nq -nquery -use -usehijack)"{-q,-query}"[queries for the resolution of a checkout problem]" \
-                "(-nq -nquery -q -query -use -usehijack)"{-nq,-nquery}"[does not query for the resolution of a checkout problem]" \
-                "(-use -usehijack -q -query -nq -nquery)"{-use,-usehijack}"[instructs checkout to use the hijacked file as the checked-out version]" \
-                "*:pname:_files" && \
-            return 0
+            local -a args
+            args+=(
+                "(-res -reserved)"{-res,-reserved}"[no user in another view can perform a reserved checkout]"
+                "(-unr -unreserved)"{-unr,-unreserved}"[other users, in other views can check out the same version]"
+                "(-nda -ndata)-out[creates a writable file under an alternate file name]:destination file pname:_files"
+                "(-nda -ndata -out)"{-nda,-ndata}"[creates a checkout record for the version, but no editable file for it]"
+                "(-bra -branch -ver -version)"{-bra,-branch}"[the branch whose most recent version is to be checked out]:branch name"
+                "(-ver -version -bra -branch)"{-ver,-version}"[allows to checkout a version that is not the latest on its branch]"
+                "(-ptime -pti)"{-ptime,-pti}"[preserves the modification time of the file being checked in]"
+                "(-nwa -nwarn)"{-nwa,-nwarn}"[suppresses warning messages]"
+                "(-c -comment -cfi -cfile -cq -cquery -cqe -cqeach -nc -nocomment)"{-c,-comment}"[comment for all objects in the command]:comment string"
+                "(-cfi -cfile -c -comment -cq -cquery -cqe -cqeach -nc -nocomment)"{-cfi,-cfile}"[text file, which is used -as comment- for all objects in the command]:comment file pname:_files"
+                "(-cq -cquery -c -comment -cfi -cfile -cqe -cqeach -nc -nocomment)"{-cq,-cquery}"[prompts for one comment, that is than used for all objects in the command]"
+                "(-cqe -cqeach -c -comment -cfi -cfile -cq -cquery -nc -nocomment)"{-cqe,-cqeach}"[prompts for comment for each object in the command]"
+                "(-nc -nocomment -c -comment -cfi -cfile -cq -cquery -cqe -cqeach)"{-nc,-nocomment}"[no user-supplied comment string for each object in the command]"
+                "(-q -query -nq -nquery -use -usehijack)"{-q,-query}"[queries for the resolution of a checkout problem]"
+                "(-nq -nquery -q -query -use -usehijack)"{-nq,-nquery}"[does not query for the resolution of a checkout problem]"
+                "(-use -usehijack -q -query -nq -nquery)"{-use,-usehijack}"[instructs checkout to use the hijacked file as the checked-out version]"
+                "*:pname:_files"
+            )
+
+            # add -quick option if -hos/t is present
+            for opt (-unr -unreserved)
+            do
+                [[ ${${${words[(r)${opt}]}/?##/1}:-0} == 1 ]] && {
+                    args+=(
+                        "(-nma -nmaster)"{-nma,-nmaster}"[checks out the branch even if the current replica does not master the branch]"
+                    )
+                    break
+                }
+            done
+
+            _arguments $args && return 0
         ;;
         "diff")
             _arguments \
@@ -300,9 +311,9 @@ _cleartool() {
                 "(-l -long -s -short)"{-l,-long}"[long description bla bla]"
                 "(-h -host)"{-h,-host}"[host description bla bla]:host:_hosts"
                 "(-pro -properties -age)"{-pro,-properties}"[properties description bla bla]"
-                "(-pro -properties)-age[lists the last access time of each file]" \
+                "(-pro -properties)-age[lists the last access time of each file]"
                 "(-reg -region)"{-reg,-region}"[region description bla bla]:network-region"
-                "-cview[cview description bla bla]" \
+                "-cview[cview description bla bla]"
             )
 
             # add -quick option if -hos/t is present
