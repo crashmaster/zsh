@@ -224,7 +224,7 @@ _cleartool() {
                 "*:pname:_files"
             )
 
-            # add -quick option if -hos/t is present
+            # add -nma/ster option if -unr/eserved is present
             for opt (-unr -unreserved)
             do
                 [[ ${${${words[(r)${opt}]}/?##/1}:-0} == 1 ]] && {
