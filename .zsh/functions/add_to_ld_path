@@ -1,0 +1,13 @@
+add_to_ld_path() {
+    local p
+    for p in "$@"
+    do
+        (( ${${path[(r)$p]}:+1} )) || {
+            [ -d $p ] && LD_LIBRARY_PATH=$p:$LD_LIBRARY_PATH
+        }
+    done
+    export LD_LIBRARY_PATH
+}
+
+# vim: ft=zsh
+

@@ -4,13 +4,6 @@ conf_func() {
     dirs_to_create=($HOME/bin               # ext compiled binaries
                     $HOME/docs              # my/ext various documents
                     $HOME/etc               # my/ext various configs
-                    $HOME/include           # ext includes
-                    $HOME/info              # ext info files
-                    $HOME/lib               # ext libraries
-                    $HOME/lib64             # ext libraries
-                    $HOME/libexec           # ext "small helper programs..."
-                    $HOME/man               # ext manuals, not mine for sure
-                    $HOME/share             # ext platform independent files
                     $HOME/src               # sources for ext applications
                     $HOME/tmp               # temp dir
                     $HOME/usr               # all my various stuff goes here
