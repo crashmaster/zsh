@@ -1,13 +1,14 @@
 print_nice_text() {
-    local bgc=$[${RANDOM}%31+200]
+    local bgc=0
     local fgc=0
-#    local fgc=$[${RANDOM}%10+16]
-    local b_inc=$[${RANDOM}%3+1]
-#    local f_inc=$[${RANDOM}%2+1]
     local f_inc=0
+    local b_inc=0
+#    local bgc=$[${RANDOM}%31+200]
+    local fgc=$[${RANDOM}%31+100]
+#    local b_inc=$[${RANDOM}%3+1]
+    local f_inc=$[${RANDOM}%3+1]
     local text
-    text=('P' 'u' 'T' 'T' 'Y' ' ' '||' ' ' 'C' 'h' 'r' 'o' 'm' 'e' ' ' '-' '>'
-          ' ' '2' '5' '6' ' ' 'C' 'o' 'l' 'o' 'r' 's' '!' ' ' 'o_O')
+    text=('2' '5' '6' ' ' 'C' 'o' 'l' 'o' 'r' 's' '!' ' ' 'd:-)')
     for ((i=1; i<=${#text}; i++))
     do
         print -n "\x1b[48;5;${bgc}m\x1b[38;5;${fgc}m ${text[$i]}\x1b[0m";
