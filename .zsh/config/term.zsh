@@ -1,23 +1,3 @@
-print_nice_text() {
-    local bgc=0
-    local fgc=0
-    local f_inc=0
-    local b_inc=0
-#    local bgc=$[${RANDOM}%31+200]
-    local fgc=$[${RANDOM}%31+100]
-#    local b_inc=$[${RANDOM}%3+1]
-    local f_inc=$[${RANDOM}%3+1]
-    local text
-    text=('2' '5' '6' ' ' 'C' 'o' 'l' 'o' 'r' 's' '!' ' ' 'd:-)')
-    for ((i=1; i<=${#text}; i++))
-    do
-        print -n "\x1b[48;5;${bgc}m\x1b[38;5;${fgc}m ${text[$i]}\x1b[0m";
-        ((bgc-=$b_inc))
-        ((fgc+=$f_inc))
-    done
-    print
-}
-
 conf_func() {
     local term_256c_conn
     term_256c_conn=(ev68b599ec9536 ev0025b3bf465f svi)
@@ -44,4 +24,3 @@ conf_func() {
 
 autoload -U colors
 [[ "$terminfo[colors]" -ge 8 ]] && colors
-
