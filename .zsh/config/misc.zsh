@@ -25,3 +25,6 @@ setopt NO_BG_NICE
 # ls in colors + add / to directory names
 LS_OPTIONS=--color=auto
 LS_OPTIONS="-N $LS_OPTIONS -T 0 -p"
+
+autoload -U colors
+[[ "$terminfo[colors]" -ge 8 ]] && colors
