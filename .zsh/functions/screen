@@ -1,10 +1,10 @@
 screen() {
     case $TERM in
         *256*|rxvt*)
-            /proj/cudbdm/tools/external/bin/screen -T screen-256color
+            /proj/cudbdm/tools/external/bin/screen -T screen-256color $*
             ;;
         *)
-            /proj/cudbdm/tools/external/bin/screen -T screen
+            /proj/cudbdm/tools/external/bin/screen -T screen $*
             ;;
     esac
 }
