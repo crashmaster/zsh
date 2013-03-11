@@ -23,8 +23,10 @@ setopt NOCLOBBER
 setopt NO_BG_NICE
 
 # ls in colors + add / to directory names
-LS_OPTIONS=--color=auto
-LS_OPTIONS="-N $LS_OPTIONS -T 0 -p"
+export LS_OPTIONS="-N --color=auto -T 0 -p"
+
+# grep in colors
+export GREP_OPTIONS='--color=auto'
 
 autoload -U colors
 [[ "$terminfo[colors]" -ge 8 ]] && colors
