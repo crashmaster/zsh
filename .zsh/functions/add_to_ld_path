@@ -5,10 +5,7 @@ add_to_ld_path() {
         ld_library_path+=($^p(N))
     done
 
-    # Did not work, but why?
-    # LD_LIBRARY_PATH=${ld_library_path:gs/ /:/}
-    # Workaround:
-    LD_LIBRARY_PATH=$(echo ${ld_library_path} | tr ' ' ':')
+    export LD_LIBRARY_PATH=$(echo ${ld_library_path} | tr ' ' ':')
 }
 
 # vim: ft=zsh
