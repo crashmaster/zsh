@@ -21,6 +21,11 @@ fpath=($ZSH/functions $ZSH/completions $fpath)
 autoload -Uz ${(f)"$(/bin/ls $ZSH/functions)"}
 # }}}
 
+# {{{ Declare path environment variables to have unique elements.
+typeset -U path
+typeset -U ld_library_path
+# }}}
+
 # {{{ Kind of modular config file structure
 # Note: the config file's name determines the sourcing order!
 loader() {
