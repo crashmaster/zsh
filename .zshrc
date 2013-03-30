@@ -15,24 +15,37 @@
 ZSH=${ZDOTDIR:-$HOME}/.zsh
 # }}}
 
+# {{{ Declare path environment variables to have unique elements.
+typeset -U path
+typeset -U ld_library_path
+# }}}
+
 # {{{ Add functions and completions directories to the fpath,
 #     and "register" function names, to be loaded upon calling
 fpath=($ZSH/functions $ZSH/completions $fpath)
 autoload -Uz ${(f)"$(/bin/ls $ZSH/functions)"}
 # }}}
 
-# {{{ Declare path environment variables to have unique elements.
-typeset -U path
-typeset -U ld_library_path
-# }}}
-
 # {{{ Kind of modular config file structure
 # Note: the config file's name determines the sourcing order!
 loader() {
-    for config_file in $ZSH/config/*.zsh
+    setopt extendedglob
+
+    # Collect *.zsh files under config directory, except for *site.zsh.
+    # Note: we have 01_site_settings.zsh, which must be processed,
+    # so ~*site* would not work. If we have a *.site.zsh file, then
+    # process it right after the corresponding config file.
+    for config_file in $ZSH/config/*.zsh~*site.zsh
     do
-      source $config_file
-      [[ -r $config_file.site ]] && source $config_file.site
+        source ${config_file}
+        config_file_without_extension=${config_file:r}
+        site_config_file=${config_file_without_extension}.site.zsh
+        [[ -r ${site_config_file} ]] && source ${site_config_file}
+
+        ### TODO: remove below after grace period. Do not make crashmaster angry. :)
+        site_config_file_for_backward_compatibility=${config_file}.site
+        [[ -r ${site_config_file_for_backward_compatibility} ]] &&
+        source ${site_config_file_for_backward_compatibility}
     done
 } && loader
 # }}}
@@ -40,4 +53,3 @@ loader() {
 # {{{ Fold the vim modline too, just for the sake of consistency :-)
 # vim:fdm=marker
 # }}}
-
