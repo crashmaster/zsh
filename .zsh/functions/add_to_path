@@ -2,6 +2,7 @@ add_to_path() {
     local p
     for p in $@
     do
+        # preprend instead of append
         path[1,0]=($^p(N))
     done
 }
