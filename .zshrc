@@ -15,9 +15,9 @@
 ZSH=${ZDOTDIR:-$HOME}/.zsh
 # }}}
 
-# {{{ Declare path environment variables to have unique elements.
-typeset -U path
-typeset -U ld_library_path
+# {{{ Declare path environment variables as arrays, which have unique elements.
+typeset -aU path
+typeset -aU ld_library_path
 # }}}
 
 # {{{ Add functions and completions directories to the fpath,
@@ -41,11 +41,6 @@ loader() {
         config_file_without_extension=${config_file:r}
         site_config_file=${config_file_without_extension}.site.zsh
         [[ -r ${site_config_file} ]] && source ${site_config_file}
-
-        ### TODO: remove below after grace period. Do not make crashmaster angry. :)
-        site_config_file_for_backward_compatibility=${config_file}.site
-        [[ -r ${site_config_file_for_backward_compatibility} ]] &&
-        source ${site_config_file_for_backward_compatibility}
     done
 } && loader
 # }}}
