@@ -2,6 +2,7 @@ print_256_color_text() {
     local text="$*"
     local fgc=$[${RANDOM}%31+100]
     local f_inc=$[${RANDOM}%3+1]
+    local i
     for ((i=1; i<=${#text}; i++))
     do
         print -n "\x1b[38;5;${fgc}m${text[$i]}\x1b[0m";
