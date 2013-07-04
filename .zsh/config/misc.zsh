@@ -19,6 +19,10 @@ setopt RM_STAR_WAIT
 # Don't write over existing files with >, use >! instead
 setopt NOCLOBBER
 
+# Add '|' to output redirections in the history. This allows history references to clobber files
+# even when CLOBBER is unset.
+setopt HIST_ALLOW_CLOBBER
+
 # Don't nice background processes
 setopt NO_BG_NICE
 
