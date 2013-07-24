@@ -23,6 +23,10 @@ setopt NOCLOBBER
 # even when CLOBBER is unset.
 setopt HIST_ALLOW_CLOBBER
 
+# A word beginning with the third character of the histchars parameter (`#' by default) causes
+# that word and all the following characters up to a newline to be ignored.
+setopt INTERACTIVE_COMMENTS
+
 # Don't nice background processes
 setopt NO_BG_NICE
 
