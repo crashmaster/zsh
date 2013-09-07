@@ -38,3 +38,5 @@ export GREP_OPTIONS='--color=auto'
 
 autoload -U colors
 [[ "$terminfo[colors]" -ge 8 ]] && colors
+
+[[ -r ~/.dircolors ]] && eval `dircolors ~/.dircolors`
