@@ -1,15 +1,16 @@
 print_256_color_text() {
     local text="$*"
-    local fgc=$[${RANDOM}%31+100]
-    local f_inc=$[${RANDOM}%3+1]
+    local fgc_base=100
+    local fgc_mod=0
     local i
     for ((i=1; i<=${#text}; i++))
     do
+        ((fgc_mod+=${RANDOM}%5))
+        ((fgc_mod%=31))
+        ((fgc=$fgc_base+$fgc_mod))
         print -n "\x1b[38;5;${fgc}m${text[$i]}\x1b[0m";
-        ((fgc+=$f_inc))
     done
     print
 }
 
 # vim: ft=zsh
-
