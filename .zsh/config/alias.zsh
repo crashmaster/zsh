@@ -7,8 +7,9 @@ alias p="/bin/ps -f --forest -u $USER"
 alias pt="/usr/bin/pstree -Achln $USER"
 
 ### ls
-alias l='/bin/ls -alF --color'
-alias ltr='/bin/ls -alFtr --color'
+alias ls='/bin/ls $=LS_OPTIONS'
+alias l='/bin/ls -alF $=LS_OPTIONS'
+alias ltr='/bin/ls -alFtr $=LS_OPTIONS'
 
 ### cd
 alias ..='cd ..'
