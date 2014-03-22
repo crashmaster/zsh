@@ -1,5 +1,7 @@
+chpwd_functions=("change_terminal_title")
+
 # When directory is changed set xterm title to host:dir
-chpwd() {
+change_terminal_title() {
     [[ -t 1 ]] || return
     case $TERM in
         sun-cmd) print -Pn "\e]l%~\e\\";;
