@@ -12,7 +12,10 @@
 # }}}
 
 # {{{ Setup zsh's home directory
-ZSH=${ZDOTDIR:-$HOME}/.zsh
+ZSH="${ZDOTDIR:-$HOME}/.zsh"
+ZSH_FUNCTIONS="${ZSH}/functions"
+ZSH_COMPLETIONS="${ZSH}/completions"
+ZSH_CONFIG="${ZSH}/config"
 # }}}
 
 # {{{ Declare path environment variables as arrays, which have unique elements.
@@ -22,8 +25,8 @@ typeset -aU ld_library_path
 
 # {{{ Add functions and completions directories to the fpath,
 #     and "register" function names, to be loaded upon calling
-fpath=($ZSH/functions $ZSH/completions $fpath)
-autoload -Uz ${(f)"$(/bin/ls $ZSH/functions)"}
+fpath=(${ZSH_FUNCTIONS} ${ZSH_COMPLETIONS} $fpath)
+autoload -Uz ${ZSH_FUNCTIONS}/*(:t)
 # }}}
 
 # {{{ Kind of modular config file structure
@@ -35,7 +38,7 @@ loader() {
     # Note: we have 01_site_settings.zsh, which must be processed,
     # so ~*site* would not work. If we have a *.site.zsh file, then
     # process it right after the corresponding config file.
-    for config_file in $ZSH/config/*.zsh~*site.zsh
+    for config_file in ${ZSH_CONFIG}/*.zsh~*site.zsh
     do
         source ${config_file}
         config_file_without_extension=${config_file:r}
