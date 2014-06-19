@@ -38,17 +38,18 @@ chpwd_python_virtual_env_handler() {
         [[ -n "${virtual_env_for_pwd}" ]] && break
     done
 
-    [[ -n "${virtual_env_for_pwd}" && -n "${ACTIVE_VIRTUAL_ENV}" && \
-       "${virtual_env_for_pwd}" != "${ACTIVE_VIRTUAL_ENV}" ]] && {
-        . ${DIR_TO_VIRTUAL_ENV[${virtual_env_for_pwd}]}/bin/activate
-        ACTIVE_VIRTUAL_ENV="${virtual_env_for_pwd}"
-        return
-    }
-
-    [[ -n "${virtual_env_for_pwd}" && -z ${ACTIVE_VIRTUAL_ENV} ]] && {
-        . ${DIR_TO_VIRTUAL_ENV[${virtual_env_for_pwd}]}/bin/activate
-        ACTIVE_VIRTUAL_ENV="${virtual_env_for_pwd}"
-        return
+    [[ -n "${virtual_env_for_pwd}" ]] && {
+        [[ -n "${ACTIVE_VIRTUAL_ENV}" && \
+           "${virtual_env_for_pwd}" != "${ACTIVE_VIRTUAL_ENV}" ]] && {
+            . ${DIR_TO_VIRTUAL_ENV[${virtual_env_for_pwd}]}/bin/activate
+            ACTIVE_VIRTUAL_ENV="${virtual_env_for_pwd}"
+            return
+        }
+        [[ -z ${ACTIVE_VIRTUAL_ENV} ]] && {
+            . ${DIR_TO_VIRTUAL_ENV[${virtual_env_for_pwd}]}/bin/activate
+            ACTIVE_VIRTUAL_ENV="${virtual_env_for_pwd}"
+            return
+        }
     }
 
     [[ -z "${virtual_env_for_pwd}" && -n ${ACTIVE_VIRTUAL_ENV} ]] && {
