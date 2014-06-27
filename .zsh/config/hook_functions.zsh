@@ -9,24 +9,17 @@ update_terminal_title() {
         sun-cmd) print -Pn "\e]l%~\e\\";;
         *xterm*|*rxvt*|(dt|k|E)term) print -Pn "\e]2;%m:%~\a";;
     esac
+
+    precmd_functions=(${precmd_functions##update_terminal_title})
 }
 
-precmd_update_terminal_title() {
-    update_terminal_title
-}
-
-precmd_functions+="precmd_update_terminal_title"
-
-chpwd_update_terminal_title() {
-    update_terminal_title
-}
-
-chpwd_functions+="chpwd_update_terminal_title"
+precmd_functions+="update_terminal_title"
+chpwd_functions+="update_terminal_title"
 
 typeset -g ACTIVE_VIRTUAL_ENV=""
 typeset -gA DIR_TO_VIRTUAL_ENV
 
-chpwd_python_virtual_env_handler() {
+python_virtual_env_handler() {
     [[ ${#DIR_TO_VIRTUAL_ENV} -eq 0 ]] && {
         return
     }
@@ -57,6 +50,9 @@ chpwd_python_virtual_env_handler() {
         ACTIVE_VIRTUAL_ENV=""
         return
     }
+
+    precmd_functions=(${precmd_functions##python_virtual_env_handler})
 }
 
-chpwd_functions+="chpwd_python_virtual_env_handler"
+precmd_functions+="python_virtual_env_handler"
+chpwd_functions+="python_virtual_env_handler"
