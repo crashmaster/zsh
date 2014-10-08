@@ -56,3 +56,47 @@ python_virtual_env_handler() {
 
 precmd_functions+="python_virtual_env_handler"
 chpwd_functions+="python_virtual_env_handler"
+
+typeset -g ACTIVE_GIT_REPO=""
+typeset -gA CONFIG_FOR_GIT_REPO
+
+git_repository_config_handler() {
+    local cwd=$(readlink -e ${PWD})
+    local repo_to_reconf=""
+    for k in ${(@k)CONFIG_FOR_GIT_REPO}
+    do
+        repo_to_reconf=${(M)${cwd}##${k}}
+        [[ -n "${repo_to_reconf}" ]] && break
+    done
+
+    [[ -n "${repo_to_reconf}" ]] && {
+        [[ "${repo_to_reconf}" == "${ACTIVE_GIT_REPO}" ]] && {
+            return
+        }
+        [[ -d "${repo_to_reconf}" ]] && {
+            for i in ${CONFIG_FOR_GIT_REPO[${repo_to_reconf}]}
+            do
+                for j in ${${${(s:+:)${i//\' /+}}//\'/}}
+                do
+                    local option="${${(s:=:)j}[1]}"
+                    local actual="$(git config --get ${option})"
+                    local expected="${${(s:=:)j}[2]}"
+                    [[ -z "${expected}" ]] && {
+                        print "Invalid configuration for: ${repo_to_reconf}"
+                        return
+                    }
+                    [[ "${expected}" != "${actual}" ]] && {
+                        git config --local ${option} ${expected}
+                    }
+                done
+            done
+            ACTIVE_GIT_REPO=${repo_to_reconf}
+        }
+    }
+    [[ -z "${repo_to_reconf}" && -n ${ACTIVE_GIT_REPO} ]] && {
+        ACTIVE_GIT_REPO=""
+        return
+    }
+}
+
+chpwd_functions+="git_repository_config_handler"
