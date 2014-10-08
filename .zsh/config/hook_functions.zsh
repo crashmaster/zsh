@@ -19,6 +19,12 @@ chpwd_functions+="update_terminal_title"
 typeset -g ACTIVE_VIRTUAL_ENV=""
 typeset -gA DIR_TO_VIRTUAL_ENV
 
+# Example:
+#   cat .zsh/config/misc.site.zsh
+#   DIR_TO_VIRTUAL_ENV+=(
+#       "/home/user/work/project" "/home/user/tmp/virtual_envs/project"
+#   )
+
 python_virtual_env_handler() {
     [[ ${#DIR_TO_VIRTUAL_ENV} -eq 0 ]] && {
         return
@@ -59,6 +65,13 @@ chpwd_functions+="python_virtual_env_handler"
 
 typeset -g ACTIVE_GIT_REPO=""
 typeset -gA CONFIG_FOR_GIT_REPO
+
+# Example:
+#   cat .zsh/config/misc.site.zsh
+#   CONFIG_FOR_GIT_REPO+=(
+#       "/home/user/git/moo" "user.email='foo.bar@boo.com' user.name='Foo Bar'"
+#   )
+#   NOTE: formatting is very important, user "-s and '-s as above.
 
 git_repository_config_handler() {
     local cwd=$(readlink -e ${PWD})
