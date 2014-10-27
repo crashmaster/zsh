@@ -18,6 +18,8 @@ zstyle ':completion:*:match:*' original only
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:default' list-colors 'di=34;01:'
 
-local _myhosts
-_myhosts=( ${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*} )
-zstyle ':completion:*' hosts $_myhosts
+[ -r $HOME/.ssh/known_hosts ] && {
+    local _myhosts
+    _myhosts=( ${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*} )
+    zstyle ':completion:*' hosts $_myhosts
+}
