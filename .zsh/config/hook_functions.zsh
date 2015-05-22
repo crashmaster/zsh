@@ -2,6 +2,7 @@ typeset -ga preexec_functions
 typeset -ga precmd_functions
 typeset -ga chpwd_functions
 
+# Update terminal title {{{
 # When directory is changed set term title to host:dir
 update_terminal_title() {
     [[ -t 1 ]] || return
@@ -15,7 +16,43 @@ update_terminal_title() {
 
 precmd_functions+="update_terminal_title"
 chpwd_functions+="update_terminal_title"
+# }}}
 
+# Handle PYTHONPATH settings {{{
+typeset -gA DIR_TO_PYTHONPATH
+
+# Example:
+#   cat .zsh/config/misc.site.zsh
+#   DIR_TO_PYTHONPATH+=(
+#       "/home/user/work/project" "./project/common:./project/server:./project/cli"
+#   )
+
+pythonpath_handler() {
+    [[ ${#DIR_TO_PYTHONPATH} -eq 0 ]] && {
+        return
+    }
+
+    local pythonpath_for_pwd=""
+    for k in ${(@k)DIR_TO_PYTHONPATH}
+    do
+        pythonpath_for_pwd=${(M)${PWD}##${k}}
+        [[ -n "${pythonpath_for_pwd}" ]] && break
+    done
+
+    [[ -n "${pythonpath_for_pwd}" ]] && {
+        export PYTHONPATH="${DIR_TO_PYTHONPATH[${pythonpath_for_pwd}]}"
+    } || {
+        unset PYTHONPATH
+    }
+
+    precmd_functions=(${precmd_functions##pythonpath_handler})
+}
+
+precmd_functions+="pythonpath_handler"
+chpwd_functions+="pythonpath_handler"
+# }}}
+
+# Handle Python virtual environments {{{
 typeset -g ACTIVE_VIRTUAL_ENV=""
 typeset -gA DIR_TO_VIRTUAL_ENV
 
@@ -62,7 +99,9 @@ python_virtual_env_handler() {
 
 precmd_functions+="python_virtual_env_handler"
 chpwd_functions+="python_virtual_env_handler"
+# }}}
 
+# Handle Git repository configurations {{{
 typeset -g ACTIVE_GIT_REPO=""
 typeset -gA CONFIG_FOR_GIT_REPO
 
@@ -113,3 +152,24 @@ git_repository_config_handler() {
 }
 
 chpwd_functions+="git_repository_config_handler"
+# }}}
+
+# Execution time of the last (full) command line {{{
+set_timer() {
+    TIMER=${TIMER:-${SECONDS}}
+}
+
+preexec_functions+="set_timer"
+
+update_timer() {
+    [ ${TIMER} ] && {
+        timer_show=$((${SECONDS} - ${TIMER}))
+        FORMATTED_TIME=$(date --utc --date="@${timer_show}" +"%H:%M:%S")
+        unset TIMER
+    }
+}
+
+precmd_functions+="update_timer"
+# }}}
+
+# vim:fdm=marker
