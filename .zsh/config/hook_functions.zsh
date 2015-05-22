@@ -154,4 +154,22 @@ git_repository_config_handler() {
 chpwd_functions+="git_repository_config_handler"
 # }}}
 
+# Execution time of the last (full) command line {{{
+set_timer() {
+    TIMER=${TIMER:-${SECONDS}}
+}
+
+preexec_functions+="set_timer"
+
+update_timer() {
+    [ ${TIMER} ] && {
+        timer_show=$((${SECONDS} - ${TIMER}))
+        FORMATTED_TIME=$(date --utc --date="@${timer_show}" +"%H:%M:%S")
+        unset TIMER
+    }
+}
+
+precmd_functions+="update_timer"
+# }}}
+
 # vim:fdm=marker
