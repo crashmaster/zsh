@@ -74,7 +74,7 @@ typeset -gA CONFIG_FOR_GIT_REPO
 #   NOTE: formatting is very important, user "-s and '-s as above.
 
 git_repository_config_handler() {
-    local cwd=$(readlink -e ${PWD})
+    local cwd=$(readlink -e "${PWD}")
     local repo_to_reconf=""
     for k in ${(@k)CONFIG_FOR_GIT_REPO}
     do
