@@ -68,7 +68,7 @@ python_virtual_env_handler() {
     }
 
     local virtual_env_for_pwd=""
-    for k in ${(@k)DIR_TO_VIRTUAL_ENV}
+    for k in ${(@Ok)DIR_TO_VIRTUAL_ENV}
     do
         virtual_env_for_pwd=${(M)${PWD}##${k}}
         [[ -n "${virtual_env_for_pwd}" ]] && break
