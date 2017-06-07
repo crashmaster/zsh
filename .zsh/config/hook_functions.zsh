@@ -35,7 +35,7 @@ pythonpath_handler() {
     local pythonpath_for_pwd=""
     for k in ${(@k)DIR_TO_PYTHONPATH}
     do
-        pythonpath_for_pwd=${(M)${PWD}%%${k}}
+        pythonpath_for_pwd=${(M)${PWD}##${k}}
         [[ -n "${pythonpath_for_pwd}" ]] && break
     done
 
@@ -70,7 +70,7 @@ python_virtual_env_handler() {
     local virtual_env_for_pwd=""
     for k in ${(@Ok)DIR_TO_VIRTUAL_ENV}
     do
-        virtual_env_for_pwd=${(M)${PWD}%%${k}}
+        virtual_env_for_pwd=${(M)${PWD}##${k}}
         [[ -n "${virtual_env_for_pwd}" ]] && break
     done
 
@@ -116,7 +116,7 @@ git_repository_config_handler() {
     local repo_to_reconf=""
     for k in ${(@k)CONFIG_FOR_GIT_REPO}
     do
-        repo_to_reconf=${(M)${PWD}%%${k}}
+        repo_to_reconf=${(M)${PWD}##${k}}
         [[ -n "${repo_to_reconf}" ]] && break
     done
 
