@@ -18,6 +18,13 @@ precmd_functions+="update_terminal_title"
 chpwd_functions+="update_terminal_title"
 # }}}
 
+# Match CWD in a smart way {{{
+match_path() {
+    local reference_path=${1}
+    print ${${(M)${PWD:+${PWD}/}##${reference_path:+${reference_path}/}}%*/}
+}
+# }}}
+
 # Handle PYTHONPATH settings {{{
 typeset -gA DIR_TO_PYTHONPATH
 
@@ -35,7 +42,7 @@ pythonpath_handler() {
     local pythonpath_for_pwd=""
     for k in ${(@k)DIR_TO_PYTHONPATH}
     do
-        pythonpath_for_pwd=${(M)${PWD}##${k}}
+        pythonpath_for_pwd=$(match_path ${k})
         [[ -n "${pythonpath_for_pwd}" ]] && break
     done
 
@@ -70,7 +77,7 @@ python_virtual_env_handler() {
     local virtual_env_for_cwd=""
     for k in ${(@Ok)DIR_TO_VIRTUAL_ENV}
     do
-        virtual_env_for_cwd=${(M)${PWD:+${PWD}/}##${k:+${k}/}}
+        virtual_env_for_cwd=$(match_path ${k})
         [[ -n "${virtual_env_for_cwd}" ]] && break
     done
 
@@ -117,7 +124,7 @@ git_repository_config_handler() {
     local repo_to_reconf=""
     for k in ${(@k)CONFIG_FOR_GIT_REPO}
     do
-        repo_to_reconf=${(M)${PWD}##${k}}
+        repo_to_reconf=$(match_path ${k})
         [[ -n "${repo_to_reconf}" ]] && break
     done
 
