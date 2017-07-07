@@ -67,28 +67,29 @@ python_virtual_env_handler() {
         return
     }
 
-    local virtual_env_for_pwd=""
+    local virtual_env_for_cwd=""
     for k in ${(@Ok)DIR_TO_VIRTUAL_ENV}
     do
-        virtual_env_for_pwd=${(M)${PWD}##${k}}
-        [[ -n "${virtual_env_for_pwd}" ]] && break
+        virtual_env_for_cwd=${(M)${PWD:+${PWD}/}##${k:+${k}/}}
+        [[ -n "${virtual_env_for_cwd}" ]] && break
     done
 
-    [[ -n "${virtual_env_for_pwd}" ]] && {
+    [[ -n "${virtual_env_for_cwd}" ]] && {
+        virtual_env_for_cwd=${virtual_env_for_cwd%*/}
         [[ -n "${ACTIVE_VIRTUAL_ENV}" && \
-           "${virtual_env_for_pwd}" != "${ACTIVE_VIRTUAL_ENV}" ]] && {
-            . ${DIR_TO_VIRTUAL_ENV[${virtual_env_for_pwd}]}/bin/activate
-            ACTIVE_VIRTUAL_ENV="${virtual_env_for_pwd}"
+           "${virtual_env_for_cwd}" != "${ACTIVE_VIRTUAL_ENV}" ]] && {
+            . ${DIR_TO_VIRTUAL_ENV[${virtual_env_for_cwd}]}/bin/activate
+            ACTIVE_VIRTUAL_ENV="${virtual_env_for_cwd}"
             return
         }
         [[ -z ${ACTIVE_VIRTUAL_ENV} ]] && {
-            . ${DIR_TO_VIRTUAL_ENV[${virtual_env_for_pwd}]}/bin/activate
-            ACTIVE_VIRTUAL_ENV="${virtual_env_for_pwd}"
+            . ${DIR_TO_VIRTUAL_ENV[${virtual_env_for_cwd}]}/bin/activate
+            ACTIVE_VIRTUAL_ENV="${virtual_env_for_cwd}"
             return
         }
     }
 
-    [[ -z "${virtual_env_for_pwd}" && -n ${ACTIVE_VIRTUAL_ENV} ]] && {
+    [[ -z "${virtual_env_for_cwd}" && -n ${ACTIVE_VIRTUAL_ENV} ]] && {
         deactivate
         ACTIVE_VIRTUAL_ENV=""
         return
