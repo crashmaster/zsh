@@ -14,3 +14,6 @@ alias ltr='/bin/ls -alFtr $=LS_OPTIONS'
 ### cd
 alias ..='cd ..'
 alias ...='cd ../..'
+
+### grep
+alias grep='/bin/grep $=MY_GREP_OPTIONS'

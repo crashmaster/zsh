@@ -34,7 +34,7 @@ setopt NO_BG_NICE
 export LS_OPTIONS="-N --color=auto -T 0 -p"
 
 # grep in colors
-export GREP_OPTIONS='--color=auto'
+export MY_GREP_OPTIONS='--color=auto'
 
 autoload -U colors
 [[ "$terminfo[colors]" -ge 8 ]] && colors
